@@ -9,6 +9,7 @@ use Illuminate\Events\Dispatcher;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\View\Compilers\BladeCompiler;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Arr;
 use Symfony\Component\HttpFoundation\Cookie;
 use Facuz\Theme\Contracts\Theme as ThemeContract;
 use Facuz\Theme\Manifest;
@@ -346,7 +347,7 @@ class Theme implements ThemeContract
 
         if (! isset($trace[1])) return;
 
-        $link = str_replace($this->getThemeName(), $theme, array_get($trace[1], 'file'));
+        $link = str_replace($this->getThemeName(), $theme, Arr::get($trace[1], 'file'));
 
         extract($this->arguments);
         extract($this->view->getShared());
@@ -370,7 +371,7 @@ class Theme implements ThemeContract
         if (! isset($trace[1])) return;
 
         // change backslash to forward slash (for windows file system)
-        $path = str_replace("\\", "/", array_get($trace[1], 'file'));
+        $path = str_replace("\\", "/", Arr::get($trace[1], 'file'));
 
         $config = $this->getConfig();
 
@@ -413,7 +414,7 @@ class Theme implements ThemeContract
         // Evaluate theme config.
         $this->themeConfig = $this->evaluateConfig($this->themeConfig);
 
-        return is_null($key) ? $this->themeConfig : array_get($this->themeConfig, $key);
+        return is_null($key) ? $this->themeConfig : Arr::get($this->themeConfig, $key);
     }
 
     /**
@@ -675,9 +676,9 @@ class Theme implements ThemeContract
         $_bindings =& $this->bindings;
 
         // Buffer processes to save request.
-        return array_get($this->bindings, $name, function() use (&$_events, &$_bindings, $name) {
+        return Arr::get($this->bindings, $name, function() use (&$_events, &$_bindings, $name) {
             $response = current($_events->fire($name));
-            array_set($_bindings, $name, $response);
+            Arr::set($_bindings, $name, $response);
             return $response;
         });
     }
@@ -801,7 +802,7 @@ class Theme implements ThemeContract
 
         $className = $widgetNamespace.'\\'.$className;
 
-        if (! $instance = array_get($widgets, $className)) {
+        if (! $instance = Arr::get($widgets, $className)) {
             $reflector = new ReflectionClass($className);
 
             if (! $reflector->isInstantiable()) {
@@ -809,7 +810,7 @@ class Theme implements ThemeContract
             }
 
             $instance = $reflector->newInstance($this, $this->config, $this->view);
-            array_set($widgets, $className, $instance);
+            Arr::set($widgets, $className, $instance);
         }
 
         $instance->setAttributes($attributes);
@@ -1139,7 +1140,7 @@ class Theme implements ThemeContract
      */
     public function getContentArgument($key, $default = null)
     {
-        return array_get($this->arguments, $key, $default);
+        return Arr::get($this->arguments, $key, $default);
     }
 
     /**

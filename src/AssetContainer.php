@@ -77,7 +77,7 @@ class AssetContainer {
             $base = rtrim($assetUrl, '/');
 
             // Asset URL without index.
-            $basePath = str_contains($base, $i) ? str_replace('/'.$i, '', $base) : $base;
+            $basePath = Str::contains($base, $i) ? str_replace('/'.$i, '', $base) : $base;
         }
         else
         {
@@ -96,7 +96,7 @@ class AssetContainer {
             $root  = preg_replace('~'.$start.'~', $scheme, $root, 1);
 
             // Asset URL without index.
-            $basePath = str_contains($root, $i) ? str_replace('/'.$i, '', $root) : $root;
+            $basePath = Str::contains($root, $i) ? str_replace('/'.$i, '', $root) : $root;
         }
 
         return $basePath.'/'.$path;
@@ -136,7 +136,7 @@ class AssetContainer {
         return $this->configAssetUrl($path, $secure);
     }
 
-    
+
     /**
      * Return asset absolute path with current theme path.
      *
@@ -211,20 +211,20 @@ class AssetContainer {
      * @param string $source
      * @param array  $dependencies
      * @param array  $attributes
-     * @return AssetContainer 
+     * @return AssetContainer
      */
     public function add($name, $source = null, $dependencies = array(), $attributes = array())
     {
         if(!is_array($name)) {
             if(!isset($source)) throw new \ErrorException("Missing argument 2 for Facuz\Theme\AssetContainer::add()", 1);
-            
+
             return $this->added($name, $source, $dependencies, $attributes);
         }
 
         foreach ($name as $array) {
             if(count($array) < 2) throw new \ErrorException("Missing value 2 of the array for Facuz\Theme\AssetContainer::add()", 1);
             $container = $array[0];
-            $source = $array[1]; 
+            $source = $array[1];
             $dependencies = isset($array[2]) ? $array[2] : [];
             $attributes = isset($array[3]) ? $array[3] : [];
 
@@ -535,7 +535,7 @@ class AssetContainer {
         if($result=='/public') $source = substr($source, 7);
 
         $source = url($source);
-        
+
         switch ($group)
         {
             case 'script' :

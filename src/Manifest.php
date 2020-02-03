@@ -1,16 +1,17 @@
 <?php namespace Facuz\Theme;
 
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Arr;
 
 class Manifest
 {
-     /**
+	/**
      * Path of all themes.
      *
      * @var array
      */
     protected $themePath;
-  
+
     /**
      * Filesystem.
      *
@@ -93,7 +94,7 @@ class Manifest
 	 */
 	public function getProperty($key, $default = null)
 	{
-		return array_get($this->getJsonContents(), $key, $default);
+		return Arr::get($this->getJsonContents(), $key, $default);
 	}
 
 	/**

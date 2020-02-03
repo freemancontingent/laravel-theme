@@ -1,18 +1,14 @@
-<?php namespace Facuz\Theme;
+<?php
 
-use Illuminate\Support\Facades\Blade;
+namespace Facuz\Theme;
+
+use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
-class ThemeServiceProvider extends ServiceProvider {
-
-	/**
-	 * Indicates if loading of the provider is deferred.
-	 *
-	 * @var bool
-	 */
-	protected $defer = false;
-
+class ThemeServiceProvider extends ServiceProvider implements DeferrableProvider
+{
 	/**
 	 * Bootstrap the application events.
 	 *
@@ -25,8 +21,8 @@ class ThemeServiceProvider extends ServiceProvider {
 
 		// Publish config.
 		$this->publishes([$configPath => config_path('theme.php')], 'config');
-	
-	    $router->aliasMiddleware('theme', Middleware\ThemeLoader::class);
+
+		$router->aliasMiddleware('theme', Middleware\ThemeLoader::class);
 
 	    // Register blade directives:
 		$this->addToBlade(['dd', 'dd(%s);']);
@@ -96,13 +92,13 @@ class ThemeServiceProvider extends ServiceProvider {
 	 * @return void
 	 */
 	protected function addToBlade($array){
-		Blade::directive($array[0], function ($data) use ($array) {	
+		Blade::directive($array[0], function ($data) use ($array) {
 			if(!$data) return '<?php echo '.$array[2].' ?>';
 
 			return sprintf('<?php echo '.$array[1].' ?>',
 				null !== $data ? $data : "get_defined_vars()['__data']"
 			);
-		});  
+		});
 	}
 
 
@@ -223,7 +219,7 @@ class ThemeServiceProvider extends ServiceProvider {
 		{
 			return new Commands\ThemeDestroyCommand($app['config'], $app['files']);
 		});
-	} 
+	}
 
 	/**
 	 * Register list themes.

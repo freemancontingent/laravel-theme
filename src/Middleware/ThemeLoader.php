@@ -1,6 +1,9 @@
-<?php namespace Facuz\Theme\Middleware;
+<?php
 
-use Closure, Theme;
+namespace Facuz\Theme\Middleware;
+
+use Closure;
+use Theme;
 
 class ThemeLoader
 {
@@ -15,28 +18,30 @@ class ThemeLoader
      */
     public function handle($request, Closure $next, $theme = null, $layout = null)
     {
-        if(isset($theme)) Theme::uses($theme);
-        if(isset($layout)) Theme::layout($layout);
+        if (isset($theme)) {
+            Theme::uses($theme);
+        }
+
+        if (isset($layout)) {
+            Theme::layout($layout);
+        }
 
         return $next($request);
-       
+
 /*
-        $response = $next($request);
-        
-        $originalContent = $response->getOriginalContent();
+$response = $next($request);
 
-        if(!is_string($originalContent)) {
-            $view_name = $originalContent->getName();
-            
-            $data = $originalContent->getData();
-        } else {
-            $view_name = $response->exception->getTrace()[0]['args'][0];
-        }
-        
+$originalContent = $response->getOriginalContent();
 
-        return $theme->scope($view_name, $data)->render();
-*/
+if(!is_string($originalContent)) {
+$view_name = $originalContent->getName();
+
+$data = $originalContent->getData();
+} else {
+$view_name = $response->exception->getTrace()[0]['args'][0];
+}
+
+return $theme->scope($view_name, $data)->render();
+ */
     }
-
-
 }

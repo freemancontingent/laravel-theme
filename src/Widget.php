@@ -1,11 +1,14 @@
-<?php namespace Facuz\Theme;
+<?php
+
+namespace Facuz\Theme;
 
 use Closure;
-use Illuminate\View\Factory;
 use Illuminate\Config\Repository;
+use Illuminate\View\Factory;
+use Illuminate\Support\Arr;
 
-abstract class Widget {
-
+abstract class Widget
+{
     /**
      * Theme instanced.
      *
@@ -136,7 +139,7 @@ abstract class Widget {
      */
     public function getAttribute($key, $default = null)
     {
-        return array_get($this->attributes, $key, $default);
+        return Arr::get($this->attributes, $key, $default);
     }
 
     /**
