@@ -24,7 +24,7 @@
         "jeremeamia/superclosure": "^2.0"
     },
     "require-dev": {
-        "illuminate/support": ">=5.6.1"
+        "illuminate/support": "5.7.*"
     },
     "autoload": {
         "psr-4": {
