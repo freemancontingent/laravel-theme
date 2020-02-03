@@ -1,11 +1,10 @@
 <?php
 
-namespace Facuz\Theme;
+namespace Fcl\Theme;
 
-use Closure;
 use Illuminate\Config\Repository;
-use Illuminate\View\Factory;
 use Illuminate\Support\Arr;
+use Illuminate\View\Factory;
 
 abstract class Widget
 {
@@ -49,14 +48,14 @@ abstract class Widget
      *
      * @var array
      */
-    public $attributes = array();
+    public $attributes = [];
 
     /**
      * Attributes including data.
      *
      * @var array
      */
-    public $data = array();
+    public $data = [];
 
     /**
      * Turn on/off widget.
@@ -71,7 +70,7 @@ abstract class Widget
      * @param  Theme                         $theme
      * @param  \Illuminate\Config\Repository $config
      * @param  \Illuminate\View\Factory      $view
-     * @return \Facuz\Theme\Widget
+     * @return \Fcl\Theme\Widget
      */
     public function __construct(Theme $theme, Repository $config, Factory $view)
     {
@@ -160,8 +159,7 @@ abstract class Widget
     public function beginWidget()
     {
         // Init widget when enable is true.
-        if ($this->enable == true)
-        {
+        if ($this->enable == true) {
             $this->init($this->theme);
         }
     }
@@ -199,17 +197,19 @@ abstract class Widget
      */
     public function render()
     {
-        if($this->enable == false) return '';
+        if ($this->enable == false) {
+            return '';
+        }
 
-        $path = $this->theme->getThemeNamespace('widgets.'.$this->template);
+        $path = $this->theme->getThemeNamespace('widgets.' . $this->template);
 
         // If not found in theme widgets directory, try to watch in views/widgets again.
-        if($this->watch === true and ! $this->view->exists($path)){
-            $path = 'widgets.'.$this->template;
+        if ($this->watch === true and !$this->view->exists($path)) {
+            $path = 'widgets.' . $this->template;
         }
 
         // Error file not exists.
-        if(!$this->view->exists($path)){
+        if (!$this->view->exists($path)) {
             throw new UnknownWidgetFileException("Widget view [$this->template] not found.");
         }
 
@@ -217,5 +217,4 @@ abstract class Widget
 
         return $widget;
     }
-
 }

@@ -1,10 +1,13 @@
-<?php namespace Facuz\Theme;
+<?php
 
-use Illuminate\Support\Facades\URL;
+namespace Fcl\Theme;
+
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Facades\URL;
 use Illuminate\View\Compilers\BladeCompiler;
 
-class Breadcrumb {
+class Breadcrumb
+{
     /**
      * Template
      *
@@ -17,7 +20,7 @@ class Breadcrumb {
      *
      * @var array
      */
-    public $crumbs = array();
+    public $crumbs = [];
 
     /**
      * Filesystem.
@@ -31,7 +34,7 @@ class Breadcrumb {
      *
      * @param  \Illuminate\Filesystem\Filesystem $files
      *
-     * @return \Facuz\Theme\Breadcrumb
+     * @return \Fcl\Theme\Breadcrumb
      */
     public function __construct(Filesystem $files)
     {
@@ -43,13 +46,13 @@ class Breadcrumb {
                 @foreach ($crumbs as $i => $crumb)
                 @if ($i != (count($crumbs) - 1))
                 <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-					<meta itemprop="position" content="{{ $i + 1}}" />
-					<a href="{{ $crumb["url"] }}" itemprop="item" title="{{ $crumb["label"] }}">
-						{!! $crumb["label"] !!}
-						<meta itemprop="name" content="{{ $crumb["label"] }}" />
-					</a>
-					<span class="divider">/</span>
-				</li>
+                    <meta itemprop="position" content="{{ $i + 1}}" />
+                    <a href="{{ $crumb["url"] }}" itemprop="item" title="{{ $crumb["label"] }}">
+                        {!! $crumb["label"] !!}
+                        <meta itemprop="name" content="{{ $crumb["label"] }}" />
+                    </a>
+                    <span class="divider">/</span>
+                </li>
                 @else
                 <li class="active">{!! $crumb["label"] !!}</li>
                 @endif
@@ -75,23 +78,26 @@ class Breadcrumb {
      * @param  string $url
      * @return Breadcrumb
      */
-    public function add($label, $url='')
+    public function add($label, $url = '')
     {
         if (is_array($label)) {
-            if (count($label) > 0) foreach ($label as $crumb) {
-                $defaults = [
-                    'label' => '',
-                    'url'   => ''
-                ];
-                $crumb = array_merge($defaults, $crumb);
-                $this->add($crumb['label'], $crumb['url']);
+            if (count($label) > 0) {
+                foreach ($label as $crumb) {
+                    $defaults = [
+                        'label' => '',
+                        'url' => '',
+                    ];
+                    $crumb = array_merge($defaults, $crumb);
+                    $this->add($crumb['label'], $crumb['url']);
+                }
             }
+
         } else {
             $label = trim(strip_tags($label, '<i><b><strong>'));
-            if (! preg_match('|^http(s)?|', $url)) {
+            if (!preg_match('|^http(s)?|', $url)) {
                 $url = URL::to($url);
             }
-            $this->crumbs[] = array('label' => $label, 'url' => $url);
+            $this->crumbs[] = ['label' => $label, 'url' => $url];
         }
 
         return $this;
@@ -116,7 +122,7 @@ class Breadcrumb {
      * @throws \Exception
      * @return string
      */
-    public function compile($template, $data = array())
+    public function compile($template, $data = [])
     {
         $compiler = new BladeCompiler($this->files, 'theme');
 
@@ -125,9 +131,9 @@ class Breadcrumb {
 
         ob_start() and extract($data, EXTR_SKIP);
         try {
-            eval('?>'.$parsed);
+            eval('?>' . $parsed);
         } catch (\Exception $e) {
-            ob_end_clean(); throw $e;
+            ob_end_clean();throw $e;
         }
         $template = ob_get_contents();
         ob_end_clean();
@@ -146,5 +152,4 @@ class Breadcrumb {
 
         return $this->compile($this->template, compact('crumbs'));
     }
-
 }

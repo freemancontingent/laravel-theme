@@ -40,7 +40,7 @@ Theme has many features to help you get started with Laravel
 To get the latest version of laravel-themes simply require it in your `composer.json` file.
 
 ~~~json
-"facuz/laravel-themes": "^3.1"
+"freemancontingent/laravel-themes": "^4.0"
 ~~~
 
 You'll then need to run `composer install` to download it and have the autoloader updated.
@@ -50,7 +50,7 @@ Once Theme is installed you need to register the service provider with the appli
 ~~~php
 'providers' => [
 	...
-	Facuz\Theme\ThemeServiceProvider::class,
+	Fcl\Theme\ThemeServiceProvider::class,
 
 ]
 ~~~
@@ -60,14 +60,14 @@ Theme also ships with a facade which provides the static syntax for creating col
 ~~~php
 'aliases' => [
 	...
-	'Theme' => Facuz\Theme\Facades\Theme::class,
+	'Theme' => Fcl\Theme\Facades\Theme::class,
 
 ]
 ~~~
 Publish config using artisan CLI.
 
 ~~~
-php artisan vendor:publish --provider="Facuz\Theme\ThemeServiceProvider"
+php artisan vendor:publish --provider="Fcl\Theme\ThemeServiceProvider"
 ~~~
 
 It's recommended to add to the `.env` file the theme that we are going to use
@@ -149,14 +149,14 @@ class HomeController extends Controller {
 ~~~
 >This will use the theme and layout set by default on `.env`
 
-		
+
 You can add data or define the theme and layout:
 
 ~~~php
-...		
+...
 Theme::uses('themename');
-        
-$data['info'] = 'Hello World'; 
+
+$data['info'] = 'Hello World';
 
 return Theme::view('index', $data);
 ...
@@ -183,7 +183,7 @@ To check whether a theme exists.
 Theme::exists('themename');
 ~~~
 
-Each theme must come supplied with a manifest file `theme.json` stored at the root of the theme, which defines supplemental details about the theme. 
+Each theme must come supplied with a manifest file `theme.json` stored at the root of the theme, which defines supplemental details about the theme.
 ~~~json
 {
     "slug": "default",
@@ -201,11 +201,11 @@ The manifest file can store any property that you'd like. These values can be re
 
 ~~~php
 // Get all: (array)
-Theme::info(); 
+Theme::info();
 // Get:
-Theme::info("property"); 
+Theme::info("property");
 // Set:
-Theme::info("property", "new data"); 
+Theme::info("property", "new data");
 ~~~
 
 #### Other ways to display a view:
@@ -302,7 +302,7 @@ This is a nice feature when you have multiple files that have the same name, but
 
 // File welcome.blade.php at Theme B is the same as Theme A, so you can do link below:
 
-Theme::symlink('a'); 
+Theme::symlink('a');
 // Location: public/themes/b/views/welcome.blade.php
 ~~~
 
@@ -315,7 +315,7 @@ The config is convenient for setting up basic CSS/JS, partial composer, breadcru
 ~~~php
 'events' => [
 
-	/* 
+	/*
 	 * Before event inherit from package config and the theme that call
 	 * before, you can use this event to set meta, breadcrumb
 	 * template or anything you want inheriting.
@@ -326,9 +326,9 @@ The config is convenient for setting up basic CSS/JS, partial composer, breadcru
 		$theme->setTitle('Title Example');
 		$theme->setAuthor('John Doe');
 		$theme->setKeywords('Example, Web');
-	
+
 		// Breadcrumb template.
-		$theme->breadcrumb()->setTemplate(`        
+		$theme->breadcrumb()->setTemplate(`
 			 <ul class="breadcrumb">
 			 @foreach($crumbs as $i => $crumb)
 				 @if($i != (count($crumbs) - 1))
@@ -340,10 +340,10 @@ The config is convenient for setting up basic CSS/JS, partial composer, breadcru
 					<li class="active">{{ $crumb["label"] }}</li>
 				 @endif
 			 @endforeach
-			 </ul>             
+			 </ul>
 		 `);
 	 },
-    
+
     /*
 	 * Listen on event before render a theme, this
 	 * event should call to assign some assets.
@@ -362,13 +362,13 @@ The config is convenient for setting up basic CSS/JS, partial composer, breadcru
 					 ]);
 
 		// Or you may use this event to set up your assets.
-		$asset->themePath()->add('core', 'core.js');			
+		$asset->themePath()->add('core', 'core.js');
 		$asset->add([
 			['jquery', 'vendor/jquery/jquery.min.js'],
 			['jquery-ui', 'vendor/jqueryui/jquery-ui.min.js', ['jquery']]
 			 ]);
 	},
-   
+
 
 	/*
 	 * Listen on event before render a theme, this event should
@@ -382,7 +382,7 @@ The config is convenient for setting up basic CSS/JS, partial composer, breadcru
 	},
 
 	/*
-	 * Listen on event before render a layout, this should 
+	 * Listen on event before render a layout, this should
 	 * call to assign style, script for a layout.
 	 */
 	'beforeRenderLayout' => [
@@ -408,7 +408,7 @@ $asset->themePath()->add('custom', 'css/custom.css', ['core-style']);
 // path: public/themes/[current-theme]/assets/css/custom.css
 // This case has dependency with "core-style".
 
-$asset->container('footer')->themePath()->add('custom', 'js/custom.js', array('core-script'));
+$asset->container('footer')->themePath()->add('custom', 'js/custom.js', ['core-script']);
 // path: public/themes/[current theme]/assets/js/custom.js
 // This case has dependency with "core-script".
 ~~~
@@ -484,7 +484,7 @@ You can prepare on a global in package config:
 ~~~php
 // Location: config/theme/config.php
 ....
-	'events' => array(
+	'events' => [
 		....
 		// This event will fire as a global you can add any assets you want here.
 		'asset' => function($asset)
@@ -496,7 +496,7 @@ You can prepare on a global in package config:
 				$asset->add('underscorejs', '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js');
 			});
 		}
-	)
+	]
 ....
 ~~~
 
@@ -703,7 +703,7 @@ php artisan theme:widget demo --global
 
 Creating a specific theme name.
 ~~~
-php artisan theme:widget demo default 
+php artisan theme:widget demo default
 ~~~
 > Widget tpl is located in "public/themes/[theme]/widgets/{widget-tpl}.blade.php"
 
@@ -727,7 +727,7 @@ or
 
 ## Using theme global
 ~~~php
-use Facuz\Theme\Contracts\Theme;
+use Fcl\Theme\Contracts\Theme;
 use App\Http\Controllers\Controller;
 
 class BaseController extends Controller {
@@ -735,7 +735,7 @@ class BaseController extends Controller {
 	/**
 	 * Theme instance.
 	 *
-	 * @var \Facuz\Theme\Theme
+	 * @var \Fcl\Theme\Theme
 	 */
 	protected $theme;
 
@@ -767,7 +767,7 @@ public function getIndex()
 ~~~
 ## Middleware:
 
-A middleware is included out of the box if you want to define a theme or layout per route. For Laravel 5.4+ the middleware is installed by default.
+A middleware is included out of the box if you want to define a theme or layout per route. For Laravel 6+ the middleware is installed by default.
 
 ##### To install it in Laravel before 5.4:
 
@@ -775,7 +775,7 @@ Only register it in `app\Http\Kernel.php`
 ~~~php
 protected $routeMiddleware = [
     ...
-    'setTheme' => \Facuz\Theme\Middleware\ThemeLoader::class,
+    'setTheme' => \Fcl\Theme\Middleware\ThemeLoader::class,
 ];
 ~~~
 
@@ -812,10 +812,10 @@ Print meta tags with common metadata.
 {!! meta_init() !!}
 ~~~
 > Returns: `<meta charset="utf-8"> <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> <meta name="viewport" content="width=device-width, initial-scale=1">`
-  
+
 ## Cheatsheet
 ##### Commands:
-Command | Description 
+Command | Description
 ------------ | -------------
 `artisan theme:create name` | Generate theme structure.
 `artisan theme:destroy name` | Remove a theme.
@@ -824,9 +824,9 @@ Command | Description
 `artisan theme:widget demo default` | Generate widget structure.
 
 ##### Blade Directives:
-Blade | Description 
+Blade | Description
 ------------ | -------------
-`@get('value')` |  Magic method for get. 
+`@get('value')` |  Magic method for get.
 `@getIfHas('value')` | Like `@get` but show only if exist.
 `@partial('value', ['var'=> 'optional'])` | Load the partial from current theme.
 `@section('value', ['var'=> 'optional'])` | Like `@partial` but load from sections folder.
@@ -835,12 +835,12 @@ Blade | Description
 `@scripts('optional')` | Render scripts declared in theme config.
 `@widget('value', ['var'=> 'optional'])` | Render widget.
 `@protect('value')` | Protect the email address against bots or spiders.
-`@dd('value')` | Dump and Die. 
+`@dd('value')` | Dump and Die.
 `@d('value')` | Only dump.
 `@dv()` | Dump, Die and show all defined variables.
 
 ##### Helpers:
-Helper | Description 
+Helper | Description
 ------------ | -------------
 `protectEmail('email')` | Protect the email address against bots or spiders.
 `meta_init()` | Print meta tags with common metadata.

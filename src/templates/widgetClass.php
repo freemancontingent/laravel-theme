@@ -1,10 +1,12 @@
-<?php namespace {widgetNamespace};
+<?php
 
-use Facuz\Theme\Theme;
-use Facuz\Theme\Widget;
+namespace {widgetNamespace};
 
-class {widgetClass} extends Widget {
+use Fcl\Theme\Theme;
+use Fcl\Theme\Widget;
 
+class {widgetClass} extends Widget
+{
     /**
      * Widget template.
      *
@@ -24,10 +26,10 @@ class {widgetClass} extends Widget {
      *
      * @var array
      */
-    public $attributes = array(
+    public $attributes = [
         //'userId' => 9999,
         'label'  => 'Default widget label',
-    );
+    ];
 
     /**
      * Turn on/off widget.
@@ -45,8 +47,8 @@ class {widgetClass} extends Widget {
     {
         // Initialize widget.
 
-        //$theme->asset()->usePath()->add('widget-name', 'js/widget-execute.js', array('jquery', 'jqueryui'));
-        //$this->setAttribute('user', User::find($this->getAttribute('userId')));
+        // $theme->asset()->usePath()->add('widget-name', 'js/widget-execute.js', ['jquery', 'jqueryui']);
+        // $this->setAttribute('user', User::find($this->getAttribute('userId')));
     }
 
     /**
@@ -56,13 +58,12 @@ class {widgetClass} extends Widget {
      */
     public function run()
     {
-        //$label = $this->getAttribute('label');
+        // $label = $this->getAttribute('label');
 
-        //$this->setAttribute('label', 'changed');
+        // $this->setAttribute('label', 'changed');
 
         $attrs = $this->getAttributes();
 
         return $attrs;
     }
-
 }

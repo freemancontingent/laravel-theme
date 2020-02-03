@@ -1,6 +1,6 @@
 <?php
 
-namespace Facuz\Theme\Middleware;
+namespace Fcl\Theme\Middleware;
 
 use Closure;
 use Theme;
@@ -27,21 +27,5 @@ class ThemeLoader
         }
 
         return $next($request);
-
-/*
-$response = $next($request);
-
-$originalContent = $response->getOriginalContent();
-
-if(!is_string($originalContent)) {
-$view_name = $originalContent->getName();
-
-$data = $originalContent->getData();
-} else {
-$view_name = $response->exception->getTrace()[0]['args'][0];
-}
-
-return $theme->scope($view_name, $data)->render();
- */
     }
 }

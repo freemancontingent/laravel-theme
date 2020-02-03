@@ -1,14 +1,18 @@
-<?php namespace Facuz\Theme\Facades;
+<?php
+
+namespace Fcl\Theme\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
-class Theme extends Facade {
-
+class Theme extends Facade
+{
     /**
      * Get the registered name of the component.
      *
      * @return string
      */
-    protected static function getFacadeAccessor() { return 'theme'; }
-
+    protected static function getFacadeAccessor()
+    {
+        return 'theme';
+    }
 }

@@ -1,5 +1,7 @@
-<?php namespace Facuz\Theme\Contracts;
+<?php
 
-interface Theme {
+namespace Fcl\Theme\Contracts;
 
+interface Theme
+{
 }

@@ -1,8 +1,8 @@
 {
-    "name": "facuz/laravel-themes",
+    "name": "freemancontingent/laravel-themes",
     "description": "Theme will help you organize your themes inside Laravel projects easily and maintain its related assets, layouts and partials for the theme in single directory. (Based on teepluss/theme)",
     "keywords": ["laravel", "theme", "layout", "asset", "widget"],
-    "homepage": "https://github.com/facuz/laravel-theme",
+    "homepage": "https://github.com/freemancontingent/laravel-theme",
     "type": "library",
     "license": "MIT",
     "authors": [
@@ -16,7 +16,7 @@
         },
         {
             "name": "Giuseppe Occhipinti",
-            "email": "peppeocchi@gmail.com"
+            "email": "giuseppe@freemancontingent.com"
         }
     ],
     "require": {
@@ -28,7 +28,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Facuz\\Theme\\": "src/"
+            "Fcl\\Theme\\": "src/"
         },
         "classmap": [
             "src/Exceptions.php"
@@ -40,10 +40,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Facuz\\Theme\\ThemeServiceProvider"
+                "Fcl\\Theme\\ThemeServiceProvider"
             ],
             "aliases": {
-                "Theme": "Facuz\\Theme\\Facades\\Theme"
+                "Theme": "Fcl\\Theme\\Facades\\Theme"
             }
         }
     },

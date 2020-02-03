@@ -1,13 +1,15 @@
-<?php namespace Facuz\Theme\Commands;
+<?php
 
-use Illuminate\Console\Command;
+namespace Fcl\Theme\Commands;
+
 use Illuminate\Config\Repository;
+use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem as File;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
 
-class WidgetGeneratorCommand extends Command {
-
+class WidgetGeneratorCommand extends Command
+{
     /**
      * The console command name.
      *
@@ -48,7 +50,7 @@ class WidgetGeneratorCommand extends Command {
      *
      * @param \Illuminate\Config\Repository     $config
      * @param \Illuminate\Filesystem\Filesystem $files
-     * @return \Facuz\Theme\Commands\WidgetGeneratorCommand
+     * @return \Fcl\Theme\Commands\WidgetGeneratorCommand
      */
     public function __construct(Repository $config, File $files)
     {
@@ -70,7 +72,7 @@ class WidgetGeneratorCommand extends Command {
         $widgetClassName = ucfirst($this->getWidgetName());
 
         // Widget class file is camel with php extension.
-        $widgetClassFile = $widgetClassName.'.php';
+        $widgetClassFile = $widgetClassName . '.php';
 
         // CamelCase for template.
         $widgetClassTpl = lcfirst($this->getWidgetName());
@@ -82,18 +84,18 @@ class WidgetGeneratorCommand extends Command {
         $watch = 'false';
 
         // If not specific a theme, not a global also return an error.
-        if ($this->option('global') === false and ! $this->argument('theme')){
+        if ($this->option('global') === false and !$this->argument('theme')) {
             return $this->error('Please specific a theme name or use option -g to create as a global widget.');
         }
-       
-        $theme_path = base_path($this->config->get('theme.themeDir').'/'.$this->getTheme());
-       
-        if (is_dir($theme_path) === false){
-            return $this->error('The theme "'.$this->getTheme().'" does not exist.');
+
+        $theme_path = base_path($this->config->get('theme.themeDir') . '/' . $this->getTheme());
+
+        if (is_dir($theme_path) === false) {
+            return $this->error('The theme "' . $this->getTheme() . '" does not exist.');
         }
 
         // Create as a global use -g.
-        if ($this->option('global') === true){
+        if ($this->option('global') === true) {
             $watch = 'true';
         }
 
@@ -101,28 +103,28 @@ class WidgetGeneratorCommand extends Command {
 
         // Prepare class template.
         $widgetClassTemplate = preg_replace(
-            array('|\{widgetNamespace\}|', '|\{widgetClass\}|', '|\{widgetTemplate\}|', '|\{watch\}|'),
-            array($widgetNamespace, $widgetClassName, $widgetClassTpl, $watch),
+            ['|\{widgetNamespace\}|', '|\{widgetClass\}|', '|\{widgetTemplate\}|', '|\{watch\}|'],
+            [$widgetNamespace, $widgetClassName, $widgetClassTpl, $watch],
             $widgetClassTemplate
         );
 
         // Create widget directory.
-        if (!$this->files->isDirectory(app_path().'/Widgets')){
-            $this->files->makeDirectory(app_path().'/Widgets', 0777, true);
+        if (!$this->files->isDirectory(app_path() . '/Widgets')) {
+            $this->files->makeDirectory(app_path() . '/Widgets', 0777, true);
         }
 
         // Widget class already exists.
-        if ($this->files->exists(app_path().'/Widgets/'.$widgetClassFile)){
-            return $this->error('Widget "'.$this->getWidgetName().'" is already exists.');
+        if ($this->files->exists(app_path() . '/Widgets/' . $widgetClassFile)) {
+            return $this->error('Widget "' . $this->getWidgetName() . '" is already exists.');
         }
 
         // Create class file.
-        $this->files->put(app_path().'/Widgets/'.$widgetClassFile, $widgetClassTemplate);
+        $this->files->put(app_path() . '/Widgets/' . $widgetClassFile, $widgetClassTemplate);
 
         // Make file example.
-        $this->makeFile('widgets/'.$widgetClassTpl.'.blade.php', $this->getTemplate('widget.blade'));
+        $this->makeFile('widgets/' . $widgetClassTpl . '.blade.php', $this->getTemplate('widget.blade'));
 
-        $this->info('Widget "'.$this->getWidgetName().'" has been created.');
+        $this->info('Widget "' . $this->getWidgetName() . '" has been created.');
     }
 
     /**
@@ -137,11 +139,11 @@ class WidgetGeneratorCommand extends Command {
         $dirname = dirname($this->getPath($file));
 
         // Checking directory.
-        if (!$this->argument('theme') and ! $this->files->isDirectory($dirname)){
+        if (!$this->argument('theme') and !$this->files->isDirectory($dirname)) {
             $this->files->makeDirectory($dirname, 0777, true);
         }
 
-        if (!$this->files->exists($this->getPath($file))){
+        if (!$this->files->exists($this->getPath($file))) {
             $this->files->put($this->getPath($file), $template);
         }
     }
@@ -155,13 +157,13 @@ class WidgetGeneratorCommand extends Command {
     protected function getPath($path)
     {
         // If not specific theme name, so widget will creating as global.
-        if (!$this->argument('theme')){
-            return base_path('resources/views/'.$path);
+        if (!$this->argument('theme')) {
+            return base_path('resources/views/' . $path);
         }
 
         $rootPath = $this->option('path');
 
-        return $rootPath.'/'.$this->getTheme().'/' . $path;
+        return $rootPath . '/' . $this->getTheme() . '/' . $path;
     }
 
     /**
@@ -193,7 +195,7 @@ class WidgetGeneratorCommand extends Command {
      */
     protected function getTemplate($template)
     {
-        $path = realpath(__DIR__.'/../templates/'.$template.'.php');
+        $path = realpath(__DIR__ . '/../templates/' . $template . '.php');
 
         return $this->files->get($path);
     }
@@ -205,10 +207,10 @@ class WidgetGeneratorCommand extends Command {
      */
     protected function getArguments()
     {
-        return array(
-            array('name', InputArgument::REQUIRED, 'Name of the widget to generate.'),
-            array('theme', InputArgument::OPTIONAL, 'Theme name to generate widget view file.')
-        );
+        return [
+            ['name', InputArgument::REQUIRED, 'Name of the widget to generate.'],
+            ['theme', InputArgument::OPTIONAL, 'Theme name to generate widget view file.'],
+        ];
     }
 
     /**
@@ -220,10 +222,9 @@ class WidgetGeneratorCommand extends Command {
     {
         $path = base_path($this->config->get('theme.themeDir'));
 
-        return array(
-            array('path', 'p', InputOption::VALUE_OPTIONAL, 'Path to theme directory.', $path),
-            array('global', 'g', InputOption::VALUE_NONE, 'Create global widget.', null)
-        );
+        return [
+            ['path', 'p', InputOption::VALUE_OPTIONAL, 'Path to theme directory.', $path],
+            ['global', 'g', InputOption::VALUE_NONE, 'Create global widget.', null],
+        ];
     }
-
 }
