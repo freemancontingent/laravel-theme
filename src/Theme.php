@@ -39,7 +39,7 @@ class Theme implements ThemeContract
      *
      * @var \Illuminate\Events\Dispatcher
      */
-    protected $events;
+    protected $dispatchesEvents;
 
     /**
      * Theme configuration.
@@ -174,7 +174,7 @@ class Theme implements ThemeContract
 
         $this->manifest = $manifest;
 
-        $this->events = $events;
+        $this->dispatchesEvents = $events;
 
         $this->view = $view;
 
@@ -224,11 +224,11 @@ class Theme implements ThemeContract
             if(isset($view['layout'])) $this->layout($view['layout']);
             if(isset($view['cookie'])) $this->withCookie($view['cookie']);
             $statusCode = (isset($view['statusCode'])) ? $view['statusCode'] : 200;
-                        
-            if(empty($args)) 
+
+            if(empty($args))
                 if(isset($view['args'])) $args = $view['args'];
 
-            
+
             $view = $view['view'];
         }
 
@@ -665,13 +665,13 @@ class Theme implements ThemeContract
         // If callback pass, so put in a queue.
         if (! empty($callback)) {
             // Preparing callback in to queues.
-            $this->events->listen($name, function() use ($callback, $variable) {
+            $this->dispatchesEvents->listen($name, function() use ($callback, $variable) {
                 return ($callback instanceof Closure) ? $callback() : $callback;
             });
         }
 
         // Passing variable to closure.
-        $_events   =& $this->events;
+        $_events   =& $this->dispatchesEvents;
         $_bindings =& $this->bindings;
 
         // Buffer processes to save request.
@@ -692,7 +692,7 @@ class Theme implements ThemeContract
     {
         $name = 'bind.'.$variable;
 
-        return $this->events->hasListeners($name);
+        return $this->dispatchesEvents->hasListeners($name);
     }
 
     /**
@@ -1164,7 +1164,7 @@ class Theme implements ThemeContract
         try {
             if ($this->view->exists($this->content)) {
                 return ($realpath) ? $this->view->getFinder()->find($this->content) : $this->content;
-            }  
+            }
         } catch (\InvalidArgumentException $e) {
             return null;
         }
