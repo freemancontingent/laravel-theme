@@ -1,6 +1,6 @@
 <?php
 
-$serializer = new SuperClosure\Serializer;
+use Opis\Closure\SerializableClosure;
 
 return [
 
@@ -77,12 +77,12 @@ return [
     'events' => [
 
         // Before all event, this event will effect for global.
-        'before' => $serializer->serialize(function ($theme) {
+        'before' => new SerializableClosure(function ($theme) {
             // $theme->setTitle('Something in global.');
         }),
 
         // This event will fire as a global you can add any assets you want here.
-        'asset' => $serializer->serialize(function ($asset) {
+        'asset' => new SerializableClosure(function ($asset) {
             // Preparing asset you need to serve after.
             $asset->cook('backbone', function ($asset) {
                 $asset->add('backbone', '//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.0.0/backbone-min.js');
