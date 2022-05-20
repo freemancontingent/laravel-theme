@@ -20,8 +20,8 @@
         }
     ],
     "require": {
-        "php": "^7.2",
-        "opis/closure": "^3.5"
+        "php": "^7.3|^8.0",
+        "opis/closure": "^3.6"
     },
     "require-dev": {
         "illuminate/support": "^7.0"
